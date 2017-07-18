@@ -14,7 +14,7 @@ void setInterrupt1Millisec();
 void setInterrupt125Microsec();
 
 //GLOBAL VARIABLES 
-int tickCounter = -1;
+short tickCounter = -1;
 byte data = 0;
 int currentBit = 0;
 int currentByte = -1;
@@ -121,7 +121,7 @@ ISR(TIMER1_COMPA_vect){
     tickCounter++;                                  //If sensor pin is LOW and tickCounter is -1, start tickCounter
   }
 
-  if(tickCounter > 8 && tickCounter&7 == 3){       //If (tickCounter)%8 == 3)
+  if(tickCounter > 8 && ((tickCounter&B00000111) == 3)){       //If (tickCounter)%8 == 3)
     if(currentBit == 8){
       tickCounter = -1;                              //byte has finished transmitting
       currentBit = 0;
