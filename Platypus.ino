@@ -25,7 +25,7 @@ char flagBuffer[30] = "temporaryTestFlag";
 int flagHash = 4443;
 int done = false;
 long secondTimer = 0;
-long oneEighthMilliSecondTimer = 0;
+long loopTimer = 0;
 
 void setup() {
   cli();
@@ -55,15 +55,15 @@ void setup() {
 //This function doesn't seem to be doing anything at the moment. Maybe later.
 void loop() {
   if(Mode == LISTEN){
-    if(hash(flagBuffer) == flagHash) { 
+    if(done && hash(flagBuffer) == flagHash) { 
       Mode = SEND;
       setInterrupt1Sec();
-    } else if(done){
+    } else {
       readError;
     }
       
-    oneEighthMilliSecondTimer++;
-    if(oneEighthMilliSecondTimer%5 == 0){
+    loopTimer++;
+    if(loopTimer%5 == 0){
       if (greenState == LOW) {
         greenState = HIGH;
       } else {
@@ -121,7 +121,7 @@ ISR(TIMER1_COMPA_vect){
     tickCounter++;                                  //If sensor pin is LOW and tickCounter is -1, start tickCounter
   }
 
-  if(tickCounter > 8 && tickCounter%8 == 3){       //If (tickCounter)%8 == 3)
+  if(tickCounter > 8 && tickCounter&7 == 3){       //If (tickCounter)%8 == 3)
     if(currentBit == 8){
       tickCounter = -1;                              //byte has finished transmitting
       currentBit = 0;
