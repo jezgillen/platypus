@@ -52,7 +52,7 @@ void setup() {
   sei();  //interrupts enabled
 }
 
-//This function doesn't seem to be doing anything at the moment. Maybe later.
+
 void loop() {
   if(Mode == LISTEN){
     if(done && hash(flagBuffer) == flagHash) { 
@@ -94,25 +94,11 @@ ISR(TIMER1_COMPB_vect){
     setInterrupt125Microsec();
     memset(flagBuffer, 0, sizeof(flagBuffer));
     secondTimer = 0;
+    done = false;         //the done flag should only be set when the flag is in memory
   }
   secondTimer++;
 }
 
-void sendFlag(char* flag){
-  shiftOutIR('~');
-  for(int index = 0; flag[index] != NULL; index++){
-    shiftOutIR(flag[index]);
-  }
-  shiftOutIR('\0');
-}
-
-int hash(char* flag){
-  long accumulator = 0;
-  for(int index = 0; flag[index] != NULL; index++){
-    accumulator += flag[index]*(index+1);
-  }
-  return accumulator%11311;
-}
 
 //Shift IR into result variable. This function is called by an interrupt every 125 microseconds
 ISR(TIMER1_COMPA_vect){
@@ -178,6 +164,30 @@ void pushOut(byte data){
     digitalWrite(4,LOW);
 }
 
+void sendFlag(char* flag){
+  shiftOutIR('~');
+  for(int index = 0; flag[index] != NULL; index++){
+    shiftOutIR(flag[index]);
+  }
+  shiftOutIR('\0');
+}
+
+int hash(char* flag){
+  long accumulator = 0;
+  for(int index = 0; flag[index] != NULL; index++){
+    accumulator += flag[index]*(index+1);
+  }
+  return accumulator%11311;
+}
+
+int alt_hash(char* flag){
+  int h = 0;
+  for(int index = 0; flag[index] != NULL; index++){
+    h = 33*h+flag[index];
+  }
+  return h;
+}
+
 //Setup timer1 to trigger an interrupt 1 time per second
 void setInterrupt1Sec(){
   TCCR1 = 1<<CTC1 | 13<<CS10;
@@ -206,6 +216,7 @@ void readError(){
   memset(flagBuffer, 0, sizeof(flagBuffer));
   currentByte = -1;
   currentBit = 0;
+  done = false;
 }
 
 
