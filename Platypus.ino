@@ -184,22 +184,20 @@ void sendFlag(char* flag){
 }
 
 unsigned long hash(char* flag){
-    digitalWrite(RED,HIGH);
-    digitalWrite(GREEN,HIGH);
+    cli();
     unsigned long h = 0;
     for(int index = 0; flag[index] != NULL; index++){
         h = 33*h+flag[index];
     }
-    digitalWrite(RED,LOW);
-    digitalWrite(GREEN,LOW);
+    sei();
     return h;
 }
 
 //Setup timer1 to trigger an interrupt 1 time per second
 void setInterrupt1Sec(){
-    TCCR1 = 1<<CTC1 | 13<<CS10;
-    OCR1B = 244;
-    OCR1C = 244;
+    TCCR1 = 1<<CTC1 | 14<<CS10;
+    OCR1B = 160; 
+    OCR1C = 160;
     TIMSK = 1<<OCIE1B;
 }
 
