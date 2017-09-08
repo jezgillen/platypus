@@ -61,7 +61,6 @@ void loop() {
             Mode = SEND;
             setInterrupt1Sec();
             digitalWrite(GREEN, LOW);
-            done = false;
         } else {
             done = false;
         }
@@ -75,7 +74,6 @@ void loop() {
             }
             digitalWrite(GREEN, greenState);
         }
-
     }
     DELAY_ONE_MILLISECOND();
 
@@ -95,19 +93,19 @@ ISR(TIMER1_COMPB_vect){
     if(secondTimer%10 == 9){
         sendFlag(flagBuffer);
     }
+    secondTimer++;
+
     //Stops sending after 7 mins ish
     if(secondTimer > SEND_TIME){
         Mode = RECEIVE;
+        digitalWrite(RED, LOW);
         setInterrupt125Microsec();
         memset(flagBuffer, 0, sizeof(flagBuffer));
-        secondTimer = 0;
         //the done flag should only be set when the flag is in memory
         done = false;         
+        secondTimer = 0;
     }
-
-    secondTimer++;
 }
-
 
 //Shift IR into buffer. This function is called by an interrupt every 125 microseconds
 ISR(TIMER1_COMPA_vect){
