@@ -73,6 +73,7 @@ void loop() {
                 greenState = LOW;
             }
             digitalWrite(GREEN, greenState);
+            digitalWrite(RED, LOW);
         }
     }
     DELAY_ONE_MILLISECOND();
@@ -89,6 +90,7 @@ ISR(TIMER1_COMPB_vect){
         redState = LOW;
     }
     digitalWrite(RED, redState);
+    digitalWrite(GREEN, LOW);
 
     if(secondTimer%10 == 9){
         sendFlag(flagBuffer);
