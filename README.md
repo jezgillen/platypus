@@ -1,4 +1,4 @@
-#Platypus Camp Badge
+# Platypus Camp Badge
 
 **In RECEIVE Mode (default):**
  - Green LEDs flash
