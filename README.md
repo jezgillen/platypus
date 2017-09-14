@@ -9,5 +9,5 @@
 **In SEND Mode:**
  - Red LEDs flash
  - Every 10 seconds, sends flag via IR LED
- - After about 7 minutes, deletes flag from memory and switchs to RECEIVE Mode
+ - After about 13 minutes, deletes flag from memory and switchs to RECEIVE Mode
 

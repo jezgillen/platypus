@@ -1,7 +1,7 @@
 #include <string.h>
 #define RECEIVE 1
 #define SEND 0
-#define SEND_TIME 60*7
+#define SEND_TIME 60*10
 #define RED 3
 #define GREEN 4
 #define IR_sense 1
@@ -18,7 +18,7 @@ void setInterrupt125Microsec();
 //GLOBAL VARIABLES 
 int Mode = RECEIVE;  
 char flagBuffer[30] = "\0";
-unsigned long flagHash = 1616977757;
+unsigned long flagHash = 3205401048;
 int done = false;
 
 void setup() {
@@ -72,8 +72,8 @@ void loop() {
             } else {
                 greenState = LOW;
             }
-            digitalWrite(GREEN, greenState);
             digitalWrite(RED, LOW);
+            digitalWrite(GREEN, greenState);
         }
     }
     DELAY_ONE_MILLISECOND();
@@ -89,9 +89,9 @@ ISR(TIMER1_COMPB_vect){
     } else {
         redState = LOW;
     }
-    digitalWrite(RED, redState);
     digitalWrite(GREEN, LOW);
-
+    digitalWrite(RED, redState);
+    
     if(secondTimer%10 == 9){
         sendFlag(flagBuffer);
     }
@@ -198,6 +198,8 @@ unsigned long hash(char* flag){
 //Setup timer1 to trigger an interrupt 1 time per second
 void setInterrupt1Sec(){
     TCCR1 = 1<<CTC1 | 14<<CS10;
+    //This is a bit longer than a second, 
+    //but it makes the flashing sync up better between modes
     OCR1B = 160; 
     OCR1C = 160;
     TIMSK = 1<<OCIE1B;
