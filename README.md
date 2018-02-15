@@ -14,9 +14,9 @@
 **Parts list:**
  - 3 red LEDs
  - 3 green LEDs
- - 1 IR LEDs
+ - 1 IR LED
  - 1 Attiny85
- - Resistors for each LED
- - IR sensor
+ - Resistors for each LED: 100ohm for IR and Red, 68ohm for green
+ - IR sensor TSOP4838
  - CR2032 Battery holder
  - 3V CR2032 Battery
