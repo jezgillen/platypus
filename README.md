@@ -20,3 +20,5 @@
  - IR sensor TSOP4838
  - CR2032 Battery holder
  - 3V CR2032 Battery
+
+If you want more detailed instructions, add an issue on github or message @idont_party on twitter
